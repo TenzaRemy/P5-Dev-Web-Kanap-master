@@ -96,6 +96,8 @@ function addKanap() {
     document.getElementById("addToCart").style.color = "green";
     document.getElementById("addToCart").textContent = "Produit ajouté !";
 
+//localStorage
+
     // Création d'un objet produit pour le rajouter dans le panier
     let newProduct = {
       id: id,
@@ -106,23 +108,24 @@ function addKanap() {
     // Condition quantité pour ajouter le produit dans le localStorage
     if (quantity.value > 0 && quantity.value <= 100 && colorChoice.value) {
 
-      // Récupération des données avec setItem
+      // Récupération des données avec getItem
       let cartLocalStorage = JSON.parse(localStorage.getItem("cart"));
 
       if (cartLocalStorage) {
-        let indexFind = false;
+        let cartFind = false;
 
+        // boucle pour augmenter quantité si seulement l'id et la couleur du produit est le même
         // entries() car renvoie des tableaux à deux éléments (couleur et quantité)
         for (let [index, productInCart] of cartLocalStorage.entries()) {
           if (productInCart.color === colorChoice.value && productInCart.id === id) {
-            indexFind = true;
+            cartFind = true;
 
             if (cartLocalStorage[index].quantity + parseInt(quantity.value) <= 100) {
               cartLocalStorage[index].quantity += parseInt(quantity.value);
             }
           }
         }
-        if (indexFind) {
+        if (cartFind) {
           localStorage.setItem("cart", JSON.stringify(cartLocalStorage));
         } else {
           cartLocalStorage.push(newProduct);

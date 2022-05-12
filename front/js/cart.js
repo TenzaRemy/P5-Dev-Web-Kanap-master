@@ -26,46 +26,45 @@ const totalPriceOfArticle = document.getElementById("totalPrice");
 
 let cartLocalStorage = JSON.parse(localStorage.getItem("cart"));
 
-console.log(cartLocalStorage);
-
-// Génération du Html pour chaque produit ajoutés
+// Affichage du tableau récapitulatif des achats dans la page cart
 
 async function showKanap() {
   if (cartLocalStorage === null) {
     document.querySelector("h1").innerHTML =+ `Vous n'avez pas d'article dans votre panier`;
+    console.log(cartLocalStorage);
   } else {
     let productsInCart = "";
     for await (let productInLocalStorage of cartLocalStorage) {
       const res = await fetch(`http://localhost:3000/api/products/${productInLocalStorage.id}`);
       if (res.ok) {
         const resJson = await res.json();
-        productsInCart += `<article class="cart__item" data-id=${productInLocalStorage.id} data-color="${productInLocalStorage.color}">
-                          <div class="cart__item__img">
-                            <img src="${resJson.imageUrl}" alt="${resJson.altTxt}">
-                          </div>
-                          <div class="cart__item__content">
-                            <div class="cart__item__content__description">
-                              <h2>${resJson.name}</h2>
-                              <p>${productInLocalStorage.color}</p>
-                              <p>${resJson.price}€</p>                     
-                            </div>
-                              <div class="cart__item__content__settings">
-                              <div class="cart__item__content__settings__quantity">
-                                <p>Qté : </p>
-                                <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${productInLocalStorage.quantity}">
-                              </div>
-                              <div class="cart__item__content__settings__delete">
-                                <p class="deleteItem">Supprimer</p>
-                              </div>
-                            </div>
-                          </div>
-                        </article>`;
+        productsInCart += 
+        `<article class="cart__item" data-id=${productInLocalStorage.id} data-color="${productInLocalStorage.color}">
+            <div class="cart__item__img">
+                <img src="${resJson.imageUrl}" alt="${resJson.altTxt}">
+              </div>
+              <div class="cart__item__content">
+              <div class="cart__item__content__description">
+                <h2>${resJson.name}</h2>
+                  <p>${productInLocalStorage.color}</p>
+                  <p>${resJson.price}€</p>                     
+              </div>
+              <div class="cart__item__content__settings">
+              <div class="cart__item__content__settings__quantity">
+                  <p>Qté : </p>
+              <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${productInLocalStorage.quantity}">
+              </div>
+              <div class="cart__item__content__settings__delete">
+                    <p class="deleteItem">Supprimer</p>
+              </div>
+              </div>
+            </div>
+          </article>`;
       }
     }
     cartFull.insertAdjacentHTML("afterbegin", productsInCart);
 
     // modification de la quantité dans la page panier
-
     addKanapLocalStorage();
     function addKanapLocalStorage() {
       const addArticleInCart = document.querySelectorAll(".cart__item__content__settings__quantity");
@@ -96,6 +95,7 @@ async function showKanap() {
 
     // Suppression d'élément dans le panier
 
+    // appelle de la fonction pour supprimer un produit du panier
     deleteKanapLocalStorage();
 
     function deleteKanapLocalStorage() {
@@ -125,7 +125,6 @@ async function showKanap() {
     }
 
     // Calcul du total de la quantité des articles dans le panier
-
     totalQuantityLocalStorage();
 
     function totalQuantityLocalStorage() {
@@ -145,8 +144,7 @@ async function showKanap() {
       document.getElementById("totalQuantity").textContent = `${totalArticle}`;
     }
 
-    // Calcul total du prix du panier
-
+    // Calcul total du prix du panier grâce a une fonction asynchrone
     totalPrice();
 
     async function totalPrice() {
@@ -156,7 +154,10 @@ async function showKanap() {
         if (res.ok) {
           const resJson = await res.json();
 
-          for (let article = 0; cartLocalStorage.length; article++) break;
+          for (let article = 0; cartLocalStorage.length; article++) 
+          
+          break;
+
           {
             let totalPriceOfCart = resJson.price * productInLocalStorage.quantity;
             totalPrice.push(totalPriceOfCart);
@@ -172,118 +173,140 @@ async function showKanap() {
   }
 }
   
+
 // Formulaire
 
-  // création objet avec les informations données par le client
-class Formulaire { constructor() {
-    this.firstName = document.getElementById('firstName').value;
-    this.lastName = document.getElementById('lastName').value;
-    this.adress = document.getElementById('address').value;
-    this.city = document.getElementById('city').value;
-    this.email = document.getElementById('email').value;
-  }
-}
 
-// variable pour différents regex
-const nameRegex = /^[A-Za-z-]{2,20}\s$/;
+// variable pour différents regex et vérifier les données via les regex
+const nameRegex = /^[A-Za-z- ]{2,20}$/;
 const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-const adressRegex = /^[0-9A-Za-z- ]{3,30}\s$/;
+const adressRegex = /^[0-9A-Za-z- ]{3,30}$/;
 
-// Analyse des informations données par le client
-function userInputVerification() {
-  const userFormulaire = new Formulaire();
+// Appelle de la fonction formulaire vérifiant tous les paramètres et envoyant un message d'erreur si besoin
+Formulaire();
 
-  // fonction firstName pour valider l'input saisit
-  function firstNameValid() {
-    const userFirstName = userFormulaire.firstName;
-    const firstNameErrorMsg = document.getElementById('firstNameErrorMsg');
-    if (nameRegex.test(userFirstName)) {
-      firstNameErrorMsg.replaceChildren();
+
+// fonction de vérification des données saisies par le client
+function Formulaire() {
+
+  // Variables pour récupérer les éléments et intéragir avec le DOM
+  const firstName = document.getElementById("firstName");
+  const lastName = document.getElementById("lastName");
+  const address = document.getElementById("address");
+  const city = document.getElementById("city");
+  const email = document.getElementById("email");
+  const errorFirstName = document.getElementById("firstNameErrorMsg");
+  const errorLastName = document.getElementById("lastNameErrorMsg");
+  const errorAddress = document.getElementById("addressErrorMsg");
+  const errorCity = document.getElementById("cityErrorMsg");
+  const errorEmail = document.getElementById("emailErrorMsg");
+  const sendForm = document.getElementById("order");
+
+  // Vérification du prénom grâce aux fonctions de rappels (callbacks)
+  function checkFirstName() {
+    const validFirstName = firstName.value;
+    if (nameRegex.test(validFirstName)) {
       return true;
+    } else {
+      errorFirstName.textContent = "Les chiffres et caractères spéciaux ne sont pas autorisés pour ce champ !";
+      return false;
     }
-    firstNameErrorMsg.appendChild(
-      document.createTextNode(
-        'Les caractères saisies ne sont pas valide'
-      )
-    );
-  }
-  // fonction Lastname pour valider l'input saisit
-  function lastNameValid() {
-    const userLastName = userFormulaire.lastName;
-    const lastNameErrorMsg = document.getElementById('lastNameErrorMsg');
-    if (nameRegex.test(userLastName)) {
-      lastNameErrorMsg.replaceChildren();
-      return true;
-    }
-    lastNameErrorMsg.appendChild(
-      document.createTextNode(
-        'Les caractères saisies ne sont pas valide'
-      )
-    );
-  }
-  // fonction Adresse pour valider l'input saisit
-  function adressValid() {
-    const userAdress = userFormulaire.adress;
-    const addressErrorMsg = document.getElementById('addressErrorMsg');
-    if (adressRegex.test(userAdress)) {
-      addressErrorMsg.replaceChildren();
-      return true;
-    }
-    addressErrorMsg.appendChild(
-      document.createTextNode("L'adresse comporte des caractères de saisies incorrect.")
-    );
-  }
-  // fonction City pour valider l'input saisit
-  function cityValid() {
-    const userCity = userFormulaire.city;
-    const cityErrorMsg = document.getElementById('cityErrorMsg');
-    if (nameRegex.test(userCity)) {
-      cityErrorMsg.replaceChildren();
-      return true;
-    }
-    cityErrorMsg.appendChild(
-      document.createTextNode(
-        'Les caractères saisies ne sont pas valide'
-      )
-    );
-  }
-  // fonction Email pour valider l'input saisit
-  function emailValid() {
-    const userEmail = userFormulaire.email;
-    const emailErrorMsg = document.getElementById('emailErrorMsg');
-    if (emailRegex.test(userEmail)) {
-      emailErrorMsg.replaceChildren();
-      return true;
-    }
-    emailErrorMsg.appendChild(
-      document.createTextNode('Adresse mail invalide.')
-    );
   }
 
-  // Vérification de tous les champs saisies si l'un deux est incorrect le formulaire n'est pas envoyé
-  return (
-    (firstNameValid() && lastNameValid() && adressValid() && cityValid() && emailValid()) ||
-    console.error('Formulaire invalide.')
-  );
-}
+  // Vérification du nom grâce aux fonctions de rappels (callbacks)
+  function checkLastName() {
+    const validLastName = lastName.value;
+    if (nameRegex.test(validLastName)) {
+      return true;
+    } else {
+      errorLastName.textContent = "Les chiffres et caractères spéciaux ne sont pas autorisés !";
+      return false;
+    }
+  }
 
-  // Création du contenu de la rêquete Fetch Post
+  // Vérification de la ville grâce aux fonctions de rappels (callbacks)
+  function checkCity() {
+    const validCity = city.value;
+    if (nameRegex.test(validCity)) {
+      return true;
+    } else {
+      errorCity.textContent = "Les chiffres et caractères spéciaux ne sont pas autorisés !";
+      return false;
+    }
+  }
 
+  // Vérification de l'adresse grâce aux fonctions de rappels (callbacks)
+  function checkAddress() {
+    const validAddress = address.value;
+    if (adressRegex.test(validAddress)) {
+      return true;
+    } else {
+      errorAddress.textContent = "Les caractères spéciaux ne sont pas autorisés pour ce champ !";
+      return false;
+    }
+  }
+
+  // Vérification de l'Email grâce aux fonctions de rappels (callbacks)
+  function checkEmail() {
+    const validEmail = email.value;
+    if (emailRegex.test(validEmail)) {
+      return true;
+    } else {
+      errorEmail.textContent = "Les caractères spéciaux comme @ et . sont obligatoire pour ce champ !";
+      return false;
+    }
+  }
+
+  // Ecoute lorsqu'on clique sur le bouton "Commander" pour envoyer le formulaire s'il est correctement saisit
+  sendForm.addEventListener("click", (event) => {
+    event.preventDefault();
+
+    const isFirstNameValid = checkFirstName();
+    const isLastNameValid = checkLastName();
+    const isCityValid = checkCity();
+    const isAddressValid = checkAddress();
+    const isEmailValid = checkEmail();
+
+    // Si les données saisies sont corrects on appelle alors la fonction orderId pour insérer les données
+    // et les envoyer dans la requête Fetch car on doit cette fois ci les envoyer dnas le back-end
+    if (isFirstNameValid && isLastNameValid && isCityValid && isAddressValid && isEmailValid) {
+      orderId();
+    }
+  });
+
+  // Création du contenu pour la rêquete Fetch Post
+
+  // fonction pour mettre les produits du localstorage dans l'array
   function orderId() {
     let purchase = [];
     for (let productPurchase of cartLocalStorage) {
       purchase.push(productPurchase.id);
     }
 
-    // Requête avec method POST via Fetch
+    // objet contact constituer des données du formulaire pour ensuite les mettres dans le tableau de produits
+    const client = {
+      products: purchase,
+      contact: {
+        firstName: firstName.value,
+        lastName: lastName.value,
+        address: address.value,
+        city: city.value,
+        email: email.value,
+      },
+    };
+
+    // Requête POST via Fetch pour envoyer les informations au back end 
 
     fetch("http://localhost:3000/api/products/order", {
       method: "POST",
-      body: JSON.stringify(Formulaire),
+      body: JSON.stringify(client),
       headers: { "Content-Type": "application/json" },
     })
+      // On envoie les données saisies du client et ses produits
       .then((res) => res.json())
       .then((value) => {
+
+        // Permet d'effacer ce qui est stocké dans le localStorage
         localStorage.clear();
         window.location.href = `../html/confirmation.html?id=${value.orderId}`;
       })
@@ -291,3 +314,4 @@ function userInputVerification() {
         console.error(err);
       });
   }
+}

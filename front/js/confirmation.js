@@ -1,12 +1,17 @@
+// Récupération de l'orderId de la page cart pour la page confirmtion
 
+const commande = new URLSearchParams(window.location.search);
 
-let orderParams = new URLSearchParams(window.location.search);
+//la variable id récupère la valeur du paramètre _id
+const id = commande.get("id");
 
-const displayOrderNumber = () => {
-  orderId.textContent = orderParams.get("id");
-  localStorage.clear();
-  setTimeout(() => {
-    window.location.href = "index.html";
-  }, 10000);
-};
-displayOrderNumber();
+orderConfirmation();
+
+// fonction pour afficher le numéro de commande 
+function orderConfirmation() {
+  const numberOfOrder = document.getElementById("orderId");
+
+  let orderIdHTML = `<span id="orderId">${id}</span>`;
+
+  numberOfOrder.insertAdjacentHTML(`afterbegin`, orderIdHTML);
+}
