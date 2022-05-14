@@ -8,7 +8,7 @@ fetch('http://localhost:3000/api/products')
   	})
   	.then(function(products) {
 
-    //  Appel de la fonction products permettant d'affichier les produits sur l'index possible si l'API est ok sinon erreur   
+    // Appel de la fonction permettant d'affichier les produits sur l'index possible si l'API est ok sinon erreur   
     showKanap();
 
  	})
@@ -17,17 +17,15 @@ fetch('http://localhost:3000/api/products')
     // Une erreur est survenue et est affichée dans la console
 });	
 
-
+// Déclarations variables pour intéragir avec les élements sélectionnées sur la page panier
 const cartFull = document.getElementById("cart__items");
 const totalArticleInCart = document.getElementById("totalQuantity");
 const totalPriceOfArticle = document.getElementById("totalPrice");
 
-// Recuperation des données du localStorage
-
+// Recuperation des données du localStorage dans la variable cartLocalStorage
 let cartLocalStorage = JSON.parse(localStorage.getItem("cart"));
 
-// Affichage du tableau récapitulatif des achats dans la page cart
-
+// Fonction asynchrone permettant l'affichage du tableau récapitulatif des achats dans la page cart
 async function showKanap() {
   if (cartLocalStorage === null) {
     document.querySelector("h1").innerHTML =+ `Vous n'avez pas d'article dans votre panier`;
@@ -63,21 +61,22 @@ async function showKanap() {
       }
     }
     cartFull.insertAdjacentHTML("afterbegin", productsInCart);
+    console.log(cartLocalStorage);
 
-    // modification de la quantité dans la page panier
-    addKanapLocalStorage();
+    
+    // fonction modifiant la quantité et la couleur du produit dans le localStorage
     function addKanapLocalStorage() {
       const addArticleInCart = document.querySelectorAll(".cart__item__content__settings__quantity");
 
       addArticleInCart.forEach((kanap) => {
         kanap.addEventListener("change", (event) => {
-          let canapFinded = event.target.closest("article");
+          let kanapFinded = event.target.closest("article");
 
           if (cartLocalStorage) {
             let indexFind;
 
             indexFind = cartLocalStorage.findIndex((savedProduct) => {
-              return savedProduct.id === canapFinded.getAttribute("data-id") && savedProduct.color === canapFinded.getAttribute("data-color");
+              return savedProduct.id === kanapFinded.getAttribute("data-id") && savedProduct.color === kanapFinded.getAttribute("data-color");
             });
 
             if (parseInt(event.target.value) > 0 && parseInt(event.target.value) <= 100) {
@@ -93,11 +92,11 @@ async function showKanap() {
       });
     }
 
-    // Suppression d'élément dans le panier
+    //appelle de la fonction pour modifier le produit présent dans le localStorage
+    addKanapLocalStorage();
 
-    // appelle de la fonction pour supprimer un produit du panier
-    deleteKanapLocalStorage();
 
+    // fonction supprimant un produit du localStorage
     function deleteKanapLocalStorage() {
       const deleteProduct = document.querySelectorAll(".deleteItem");
 
@@ -124,9 +123,10 @@ async function showKanap() {
       });
     }
 
-    // Calcul du total de la quantité des articles dans le panier
-    totalQuantityLocalStorage();
+    // appelle de la fonction pour supprimer un produit du panier
+    deleteKanapLocalStorage();
 
+    // fonction calculant la quantités des articles présents dans le localStorage
     function totalQuantityLocalStorage() {
       let totalQuantity = [];
 
@@ -144,9 +144,10 @@ async function showKanap() {
       document.getElementById("totalQuantity").textContent = `${totalArticle}`;
     }
 
-    // Calcul total du prix du panier grâce a une fonction asynchrone
-    totalPrice();
+    // Calcul du total de la quantité des articles dans le panier
+    totalQuantityLocalStorage();
 
+    // fonction asynchrone permettant de calculer le prix total et de l'afficher 
     async function totalPrice() {
       let totalPrice = [];
       for await (let productInLocalStorage of cartLocalStorage) {
@@ -170,20 +171,20 @@ async function showKanap() {
       totalPriceOfArticle.insertAdjacentHTML("afterbegin", totalPriceHTML);
       document.getElementById("totalPrice").textContent = `${totalArticle}`;
     }
+
+    // Calcul total du prix du panier et de l'afficher grâce a une fonction asynchrone
+    totalPrice();
   }
 }
   
 
-// Formulaire
+// Etapes du Formulaire
 
 
 // variable pour différents regex et vérifier les données via les regex
 const nameRegex = /^[A-Za-z- ]{2,20}$/;
 const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const adressRegex = /^[0-9A-Za-z- ]{3,30}$/;
-
-// Appelle de la fonction formulaire vérifiant tous les paramètres et envoyant un message d'erreur si besoin
-Formulaire();
 
 
 // fonction de vérification des données saisies par le client
@@ -261,6 +262,7 @@ function Formulaire() {
   sendForm.addEventListener("click", (event) => {
     event.preventDefault();
 
+    // Déclarations de variables pour stocker les infos de verification des fonctions et verifier si tout est ok
     const isFirstNameValid = checkFirstName();
     const isLastNameValid = checkLastName();
     const isCityValid = checkCity();
@@ -315,3 +317,6 @@ function Formulaire() {
       });
   }
 }
+
+// Appelle de la fonction formulaire vérifiant tous les paramètres et envoyant un message d'erreur si besoin
+Formulaire();

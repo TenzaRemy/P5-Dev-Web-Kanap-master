@@ -8,7 +8,7 @@ fetch('http://localhost:3000/api/products')
   	})
   	.then(function(products) {
 
-    //  Appel de la fonction products permettant d'affichier les produits sur l'index possible si l'API est ok sinon erreur   
+    //  Appel de la fonction permettant d'affichier les produits sur l'index possible si l'API est ok sinon erreur   
  
     lesKanap(products);
 
