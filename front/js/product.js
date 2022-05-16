@@ -1,7 +1,7 @@
 // le lien entre un produit de la page d’accueil et la page Produit
 const params = new URLSearchParams(window.location.search);
 
-// la variable id récupère la valeur du paramètre _id
+// permet d'afficher seulement ce produit avec l'id correspondant au produit choisit
 const id = params.get("_id");
 
 // requêter toujours l’API pour lui demander l’ensemble des produits

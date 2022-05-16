@@ -301,6 +301,7 @@ function Formulaire() {
 
     fetch("http://localhost:3000/api/products/order", {
       method: "POST",
+      // transforme l'objet client en contenu JSON 
       body: JSON.stringify(client),
       headers: { "Content-Type": "application/json" },
     })
