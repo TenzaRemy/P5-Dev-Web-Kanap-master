@@ -9,7 +9,8 @@ const id = commande.get("id");
 function orderConfirmation() {
   const numberOfOrder = document.getElementById("orderId");
 
-  let orderIdHTML = `<span id="orderId">${id}</span>`;
+  let orderIdHTML = `<span id="orderId">${id}</span>
+                      <p> Merci pour votre commande à bientôt !</p>`;
 
   numberOfOrder.insertAdjacentHTML(`afterbegin`, orderIdHTML);
 }
