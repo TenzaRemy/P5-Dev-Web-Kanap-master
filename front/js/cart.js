@@ -181,7 +181,7 @@ async function showKanap() {
 // Etapes du Formulaire
 
 
-// variable pour différents regex et vérifier les données via les regex
+// variable pour différents regex selon les caractères autorisés et vérifier les données 
 const nameRegex = /^[A-Za-z- ]{2,20}$/;
 const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const adressRegex = /^[0-9A-Za-z- ]{3,30}$/;
@@ -190,7 +190,7 @@ const adressRegex = /^[0-9A-Za-z- ]{3,30}$/;
 // fonction de vérification des données saisies par le client
 function Formulaire() {
 
-  // Variables pour récupérer les éléments et intéragir avec le DOM
+  // Variables pour récupérer les éléments et intéragir avec le DOM car on les utilises dans les callbacks après
   const firstName = document.getElementById("firstName");
   const lastName = document.getElementById("lastName");
   const address = document.getElementById("address");
@@ -298,7 +298,6 @@ function Formulaire() {
     };
 
     // Requête POST via Fetch pour envoyer les informations au back end 
-
     fetch("http://localhost:3000/api/products/order", {
       method: "POST",
       // transforme l'objet client en contenu JSON 
@@ -320,5 +319,4 @@ function Formulaire() {
 }
 
 // Appelle de la fonction formulaire vérifiant tous les paramètres et envoyant un message d'erreur si besoin
-
 Formulaire();

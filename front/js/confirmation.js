@@ -1,8 +1,8 @@
-// Récupération de l'orderId de la page cart pour la page confirmtion
+// Récupération de l'orderId de la page cart pour la page confirmation
 
 const commande = new URLSearchParams(window.location.search);
 
-//la variable id récupère la valeur du paramètre _id
+//la variable id récupère la valeur du paramètre _id grâce à URLSearchParams on sait laquelle il faut prendre
 const id = commande.get("id");
 
 // fonction pour afficher le numéro de commande 
