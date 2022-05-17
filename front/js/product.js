@@ -115,17 +115,20 @@ function addKanap() {
         let cartFind = false;
 
         // boucle pour augmenter quantité si seulement l'id et la couleur du produit est le même
-        // entries() car renvoie des tableaux à deux éléments (couleur et quantité)
+        // entries() car renvoie des tableaux à deux éléments (couleur et quantité) en l'occurence l'array localStorage
         for (let [index, productInCart] of cartLocalStorage.entries()) {
           if (productInCart.color === colorChoice.value && productInCart.id === id) {
             cartFind = true;
 
+            // Analyse la quantité grâce à parseInt
             if (cartLocalStorage[index].quantity + parseInt(quantity.value) <= 100) {
               cartLocalStorage[index].quantity += parseInt(quantity.value);
             }
           }
         }
+        // Si l'objet est trouvé on l'ajoute dans le localStorage avec la clé 'cart'
         if (cartFind) {
+          // stringify renvoie la valeur javascript au format json
           localStorage.setItem("cart", JSON.stringify(cartLocalStorage));
         } else {
           cartLocalStorage.push(newProduct);

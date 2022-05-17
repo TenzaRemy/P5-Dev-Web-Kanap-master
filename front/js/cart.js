@@ -25,7 +25,7 @@ const totalPriceOfArticle = document.getElementById("totalPrice");
 // Recuperation des données du localStorage dans la variable cartLocalStorage
 let cartLocalStorage = JSON.parse(localStorage.getItem("cart"));
 
-// Fonction asynchrone permettant l'affichage du tableau récapitulatif des achats dans la page cart
+// Fonction asynchrone permettant l'affichage dynamique du tableau récapitulatif des achats dans la page cart
 async function showKanap() {
   if (cartLocalStorage === null) {
     document.querySelector("h1").innerHTML =+ `Vous n'avez pas d'article dans votre panier`;
@@ -76,7 +76,7 @@ async function showKanap() {
             let indexFind;
 
             indexFind = cartLocalStorage.findIndex((savedProduct) => {
-              return savedProduct.id === kanapFinded.getAttribute("data-id") && savedProduct.color === kanapFinded.getAttribute("data-color");
+              return savedProduct.id === kanapFinded.getAttribute("data-id") && gitsavedProduct.color === kanapFinded.getAttribute("data-color");
             });
 
             if (parseInt(event.target.value) > 0 && parseInt(event.target.value) <= 100) {
