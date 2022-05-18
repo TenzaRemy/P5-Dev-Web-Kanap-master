@@ -27,8 +27,13 @@ let cartLocalStorage = JSON.parse(localStorage.getItem("cart"));
 
 // Fonction asynchrone permettant l'affichage dynamique du tableau récapitulatif des achats dans la page cart
 async function showKanap() {
-  if (cartLocalStorage === null) {
-    document.querySelector("h1").innerHTML =+ `Vous n'avez pas d'article dans votre panier`;
+
+  // Si le panier est vide on ajoute à la page ces éléments
+  if (cartLocalStorage === null || cartLocalStorage === 0 || cartLocalStorage.length === 0) {
+    const emptyCart = `<h1>Votre panier est vide</h1>`;
+    document.querySelector("h1").innerHTML = emptyCart;
+    document.getElementById("totalPrice").textContent = '0';
+    document.getElementById("totalQuantity").textContent = '0';
     console.log(cartLocalStorage);
   } else {
     let productsInCart = "";
@@ -70,6 +75,7 @@ async function showKanap() {
 
       addArticleInCart.forEach((kanap) => {
         kanap.addEventListener("change", (event) => {
+          event.preventDefault();
           let kanapFinded = event.target.closest("article");
 
           if (cartLocalStorage) {
@@ -102,6 +108,7 @@ async function showKanap() {
 
       deleteProduct.forEach((kanap) => {
         kanap.addEventListener("click", (event) => {
+          event.preventDefault();
           let KanapFinded = event.target.closest("article");
 
           if (cartLocalStorage) {
