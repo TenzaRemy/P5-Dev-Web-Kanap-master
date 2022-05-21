@@ -82,7 +82,7 @@ async function showKanap() {
             let indexFind;
 
             indexFind = cartLocalStorage.findIndex((savedProduct) => {
-              return savedProduct.id === kanapFinded.getAttribute("data-id") && gitsavedProduct.color === kanapFinded.getAttribute("data-color");
+              return savedProduct.id === kanapFinded.getAttribute("data-id") && savedProduct.color === kanapFinded.getAttribute("data-color");
             });
 
             if (parseInt(event.target.value) > 0 && parseInt(event.target.value) <= 100) {
