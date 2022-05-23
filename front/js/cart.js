@@ -189,9 +189,9 @@ async function showKanap() {
 
 
 // variable pour différents regex selon les caractères autorisés et vérifier les données 
-const nameRegex = /^[A-Za-z- ]{2,20}$/;
+const nameRegex = /^[A-Z][A-Za-z\é\è\ê\-]+$/;
 const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-const adressRegex = /^[0-9A-Za-z- ]{3,30}$/;
+const adressRegex = /^[A-Za-z0-9 ]{3,30}$/;
 
 
 // fonction de vérification des données saisies par le client
@@ -215,8 +215,11 @@ function Formulaire() {
     const validFirstName = firstName.value;
     if (nameRegex.test(validFirstName)) {
       return true;
+     } else if (validFirstName == '') {
+        alert('Veuillez saisir votre prénom avant de passer votre commande !');
+        return false;
     } else {
-      errorFirstName.textContent = "Les chiffres et caractères spéciaux ne sont pas autorisés pour ce champ !";
+      alert("Les chiffres et caractères spéciaux ne sont pas autorisés pour le PRENOM !");
       return false;
     }
   }
@@ -226,8 +229,11 @@ function Formulaire() {
     const validLastName = lastName.value;
     if (nameRegex.test(validLastName)) {
       return true;
+    } else if (validLastName == '') {
+      alert('Veuillez saisir votre nom avant de passer votre commande !');
+      return false;
     } else {
-      errorLastName.textContent = "Les chiffres et caractères spéciaux ne sont pas autorisés !";
+      alert("Les chiffres et caractères spéciaux ne sont pas autorisés pour le NOM !");
       return false;
     }
   }
@@ -237,8 +243,11 @@ function Formulaire() {
     const validCity = city.value;
     if (nameRegex.test(validCity)) {
       return true;
+    } else if (validCity == '') {
+      alert('Veuillez saisir votre ville avant de passer votre commande !');
+      return false;
     } else {
-      errorCity.textContent = "Les chiffres et caractères spéciaux ne sont pas autorisés !";
+      alert("Les chiffres et caractères spéciaux ne sont pas autorisés pour la VILLE !");
       return false;
     }
   }
@@ -248,8 +257,11 @@ function Formulaire() {
     const validAddress = address.value;
     if (adressRegex.test(validAddress)) {
       return true;
+    } else if (validAddress == '') {
+      alert('Veuillez saisir votre adresse avant de passer votre commande !');
+      return false;
     } else {
-      errorAddress.textContent = "Les caractères spéciaux ne sont pas autorisés pour ce champ !";
+      alert("Les caractères spéciaux ne sont pas autorisés pour ce champ !");
       return false;
     }
   }
@@ -259,8 +271,11 @@ function Formulaire() {
     const validEmail = email.value;
     if (emailRegex.test(validEmail)) {
       return true;
+    } else if (validEmail == '') {
+      alert('Veuillez saisir voter email avant de passer votre commande !');
+      return false;
     } else {
-      errorEmail.textContent = "Les caractères spéciaux comme @ et . sont obligatoire pour ce champ !";
+      alert('Les caractères spéciaux comme @ et . sont obligatoire pour ce champ !');
       return false;
     }
   }

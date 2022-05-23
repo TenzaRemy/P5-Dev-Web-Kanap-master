@@ -89,14 +89,20 @@ function kanap(products) {
 function addKanap() {
   const addToCart = document.getElementById("addToCart");
 
-  // Event lors du click sur le bouton "Ajouter au panier! modifiant la couleur et le texte"
-  addToCart.addEventListener("click", (event) => {
-    const colorChoice = document.getElementById("colors");
-    const quantity = document.getElementById("quantity");
-    document.getElementById("addToCart").style.color = "green";
-    document.getElementById("addToCart").textContent = "Produit ajouté !";
-
 //localStorage
+
+ // Event lors du click sur le bouton "Ajouter au panier! modifiant la couleur et le texte"
+  const colorChoice = document.getElementById("colors");
+    const quantity = document.getElementById("quantity");
+  addToCart.addEventListener("click", (event) => {
+    event.preventDefault();
+
+
+    if (quantity.value > 0 && quantity.value <= 100 && colorChoice.value) {
+      alert('Produit ajouté dans le panier avec succes !')
+     } else { 
+      alert('Produit non ajouté dans le panier car tous les champs ne sont pas remplis')
+     }
 
     // Création d'un objet produit pour le rajouter dans le panier
     let newProduct = {
@@ -118,6 +124,7 @@ function addKanap() {
         // entries() car renvoie des tableaux à deux éléments (couleur et quantité) en l'occurence l'array localStorage
         for (let [index, productInCart] of cartLocalStorage.entries()) {
           if (productInCart.color === colorChoice.value && productInCart.id === id) {
+            alert('ATTENTION : Le produit précédemment ajouté était le même mais il a quand même été ajouté avec la quantité souhaité. Si vous souhaitez revenir sur votre choix, veuillez consulter votre panier.')
             cartFind = true;
 
             // Analyse la quantité grâce à parseInt
@@ -146,9 +153,11 @@ function addKanap() {
         // localStorage pour pouvoir stocker et y accéder.
         localStorage.setItem("cart", JSON.stringify(arrayPannier));
       }
+      
     }
-  });
-}
+    }
+  )};
+
 
 
 
