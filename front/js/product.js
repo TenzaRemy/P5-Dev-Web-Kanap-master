@@ -21,6 +21,7 @@ fetch('http://localhost:3000/api/products')
  	})
   	.catch(function(err) {
   		console.log("Le produit que vous avez choisi n'est pas disponible. Veuillez réessayez ultérieurement !" + err);
+      alert("Le produit que vous avez séléctionez n'est plus disponible !");
     // Une erreur est survenue et est affichée dans la console
 });	
 

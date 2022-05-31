@@ -14,6 +14,7 @@ fetch('http://localhost:3000/api/products')
  	})
   	.catch(function(err) {
   		console.log(" Êtes vous sur d'avoir fait votre choix ? " + err);
+      alert("Les produits de votre panier ne sont plus disponibles dû a une erreur. Veuillez contacter notre administrateur");
     // Une erreur est survenue et est affichée dans la console
 });	
 

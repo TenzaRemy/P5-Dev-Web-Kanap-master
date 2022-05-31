@@ -15,6 +15,7 @@ fetch('http://localhost:3000/api/products')
  	})
   	.catch(function(err) {
   		console.log(" Êtes vous sur ?" + err);
+      alert("Les produits ne sont pas affichés, veuillez donc contacter l'administrateur pour résoudre l'erreur");
     // Une erreur est survenue et est affichée dans la console
 });	
 
